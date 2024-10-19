@@ -1,4 +1,4 @@
-import './App.css';
+// import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
@@ -27,8 +27,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Login setUser={setUser} />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/estudiante" element={user?.rol === 'Estudiante' ? <PlataformaEstudiante handleLogout={handleLogout}/> : <Login setUser={setUser} />} />
-        <Route path="/docente" element={user?.rol === 'Docente' ? <PlataformaDocente handleLogout={handleLogout}/> : <Login setUser={setUser} />} />
+        <Route path="/estudiante" element={user?.rol === 'Estudiante' ? <PlataformaEstudiante user={user} handleLogout={handleLogout} /> : <Login setUser={setUser} />} />
+        <Route path="/docente" element={user?.rol === 'Docente' ? <PlataformaDocente user={user} handleLogout={handleLogout} /> : <Login setUser={setUser} />} />
       </Routes>
     </BrowserRouter>
   );

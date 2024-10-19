@@ -6,25 +6,32 @@ const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 
+
 const app = express();
 const port = process.env.PORT || 3000;
+
+
+// Configuración de CORS
+app.use(cors({
+    origin: 'http://localhost:5173', // El origen de tu frontend (puerto de Vite)
+    credentials: true // Permite enviar cookies y encabezados de autenticación
+}));
 
 // Middleware para parsear JSON y habilitar CORS
 app.use(bodyParser.json());
 
-app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true
-}));
+
+
 
 
 // Configuración de sesiones
 app.use(session({
     secret: 'secret-key',
     resave: false,
-    saveUninitialized: false, // Solo guarda la sesión si se modifica
-    cookie: { secure: false } // Cambiar a true si usas HTTPS
+    saveUninitialized: false,  // Solo guardar si la sesión cambia
+    cookie: { secure: false }  // Cambiar a true si usas HTTPS
 }));
+
 
 
 
@@ -74,10 +81,10 @@ app.post('/login', (req, res) => {
                         rol: user.rol
                     };
                     res.json(req.session.user);
-
                 } else {
                     res.status(401).json({ message: 'Credenciales incorrectas' });
                 }
+                
             } else {
                 res.status(401).json({ message: 'Usuario no encontrado' });
             }
@@ -87,22 +94,26 @@ app.post('/login', (req, res) => {
 
 
 
+
+
 app.post('/register', (req, res) => {
-    const { nombre, apellido, ci, telefono, email, password, rol, especialidad, nivel_academico, experiencia, categoria, matricula, carrera, cu } = req.body;
+    const { nombre, apellido, email, ci, telefono, password, rol, especialidad, nivel_academico, experiencia, categoria, matricula, carrera, cu } = req.body;
 
     // Fecha de registro y ajuste de zona horaria
-    const fechaRegistro = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const fecha_registro = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const fecha_ingreso = new Date().toISOString().slice(0, 19).replace('T', ' ');
 
-    const sqlUsuario = "INSERT INTO usuarios (`nombre`, `apellido`, `ci`, `telefono`, `email`, `password`, `rol`, `fecha_registro`) VALUES (?)";
+    const sqlUsuario = "INSERT INTO usuarios (`nombre`, `apellido`, `email`, `ci`, `telefono`, `password`, `rol`, `fecha_registro`) VALUES (?)";
 
     // Hash de la contraseña
     const saltRounds = 10;
     bcrypt.hash(password.toString(), saltRounds, (err, hash) => {
+
         if (err) return res.json({ Error: "Error hashing password" });
 
-        const userValues = [nombre, apellido, ci, telefono, email, hash, rol, fechaRegistro];
+        const userValues = [nombre, apellido, email, ci, telefono, hash, rol, fecha_registro];
 
-        db.query(sqlUsuario, [userValues], (err, result) => {
+        connection.query(sqlUsuario, [userValues], (err, result) => {
             if (err) {
                 console.error("Error al registrar el usuario:", err);
                 return res.json({ Error: "Error al registrar el usuario", Details: err });
@@ -112,9 +123,10 @@ app.post('/register', (req, res) => {
 
             if (rol === 'Docente') {
                 const sqlDocente = "INSERT INTO docente (`id_usuario`, `especialidad`, `nivel_academico`, `experiencia`, `categoria`) VALUES (?)";
+
                 const docenteValues = [id_usuario, especialidad, nivel_academico, experiencia, categoria];
 
-                db.query(sqlDocente, [docenteValues], (err, result) => {
+                connection.query(sqlDocente, [docenteValues], (err, result) => {
                     if (err) {
                         console.error("Error al registrar el docente:", err);
                         return res.json({ Error: "Error al registrar el docente", Details: err });
@@ -124,9 +136,9 @@ app.post('/register', (req, res) => {
 
             } else if (rol === 'Estudiante') {
                 const sqlEstudiante = "INSERT INTO estudiante (`id_usuario`, `matricula`, `carrera`, `cu`, `fecha_ingreso`) VALUES (?)";
-                const estudianteValues = [id_usuario, matricula, carrera, cu, fechaRegistro];
+                const estudianteValues = [id_usuario, matricula, carrera, cu, fecha_ingreso];
 
-                db.query(sqlEstudiante, [estudianteValues], (err, result) => {
+                connection.query(sqlEstudiante, [estudianteValues], (err, result) => {
                     if (err) {
                         console.error("Error al registrar el estudiante:", err);
                         return res.json({ Error: "Error al registrar el estudiante", Details: err });
@@ -141,14 +153,16 @@ app.post('/register', (req, res) => {
 
 
 
+
 // Ruta protegida 
 app.get('/protected', (req, res) => {
-    if(req.session.user){
+    if (req.session.user) {
         res.json(req.session.user);
-    } else{
+    } else {
         res.status(401).send('No autorizado');
     }
-})
+});
+
 
 
 // Cerrar sesión
