@@ -55,41 +55,37 @@ connection.connect((err) => {
 
 
 app.post('/login', (req, res) => {
+
     const { email, password } = req.body;
 
     var sql = 'SELECT * FROM usuarios WHERE email = ?';
-
     connection.query(sql, [email], async (error, results) => {
-
-            if (error) {
-                return res.status(500).json({ error: 'Error en el servidor' });
-
-            } 
-
-            if (results.length === 0) {
-                return res.status(401).json({ error: 'Email o contraseña incorrectos' });
-            }
-            
-            if (results.length > 0) {
-                const user = results[0];
-
-                if (await bcrypt.compare(password, user.password)) {
-                    req.session.user = {
-                        id: user.id,
-                        email: user.email,
-                        nombre: user.nombre,
-                        rol: user.rol
-                    };
-                    res.json(req.session.user);
-                } else {
-                    res.status(401).json({ message: 'Credenciales incorrectas' });
-                }
-                
-            } else {
-                res.status(401).json({ message: 'Usuario no encontrado' });
-            }
+        if (error) {
+            return res.status(500).json({ error: 'Error en el servidor' });
         }
-    );
+
+        if (results.length > 0) {
+            const user = results[0];  
+
+            // console.log('Resultado de la consulta SQL:', user);  // Revisa aquí si tiene el id_usuario
+            
+            if (await bcrypt.compare(password, user.password)) {
+                req.session.user = {
+                    id: user.id_usuario,  // Usar el id_usuario si este es el nombre correcto
+                    email: user.email,
+                    nombre: user.nombre,
+                    rol: user.rol
+                };
+                // console.log('Sesión iniciada:', req.session.user);
+                res.json(req.session.user);
+            } else {
+                res.status(401).json({ message: 'Credenciales incorrectas' });
+            }
+        } else {
+            res.status(401).json({ message: 'Usuario no encontrado' });
+        }
+    });
+
 });
 
 
@@ -180,3 +176,56 @@ app.post('/logout', (req, res) => {
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
 });
+
+
+
+
+
+//? Ruta para obtener las asignaturas de un docente
+
+app.get('/asignaturas', (req, res) => {
+
+    const usuarioId = req.query.id_usuario;  // Obtener el id_usuario del query param
+
+    if (!usuarioId) {
+        console.error('ID de usuario no proporcionado');
+        return res.status(400).json({ error: 'Falta el id_usuario' });
+    }
+
+    // console.log('ID del usuario recibido:', usuarioId);
+
+    // Obtener el id_docente correspondiente al id_usuario
+    const docenteSql = 'SELECT id_docente FROM docente WHERE id_usuario = ?';
+
+    connection.query(docenteSql, [usuarioId], (error, docenteResult) => {
+        if (error) {
+            console.error('Error al obtener el id_docente:', error);  // Log de error
+            return res.status(500).json({ error: 'Error al obtener datos del docente' });
+        }
+        
+        if (docenteResult.length === 0) {
+            console.error('Docente no encontrado');
+            return res.status(404).json({ error: 'Docente no encontrado' });
+        }
+
+        const docenteId = docenteResult[0].id_docente;
+        // console.log('ID del docente:', docenteId);
+
+        const asignaturaSql = `
+            SELECT a.id_asignatura, a.nombre, a.sigla, a.creditos, a.curso
+            FROM asignatura a
+            JOIN docente_asignatura da ON a.id_asignatura = da.id_asignatura
+            WHERE da.id_docente = ?
+        `;
+
+        connection.query(asignaturaSql, [docenteId], (error, results) => {
+            if (error) {
+                console.error('Error al obtener asignaturas:', error);  // Log de error
+                return res.status(500).json({ error: 'Error al obtener asignaturas' });
+            }
+
+            res.json(results);
+        });
+    });
+});
+
