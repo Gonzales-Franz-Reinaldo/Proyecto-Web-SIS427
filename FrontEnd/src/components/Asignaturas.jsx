@@ -28,8 +28,8 @@ export const Asignaturas = ({ userId }) => {
                             <p className="text-gray-600">Sigla: <span className="font-medium">{asignatura.sigla}</span></p>
                             <p className="mt-2">Créditos: <span className="font-medium">{asignatura.creditos}</span></p>
                             <div className="flex justify-center mt-4">
-                                <Link to={`/docente/asignatura/${asignatura.id_asignatura}`} className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-full shadow transition duration-200 transform hover:scale-105">
-                                    Ver asignatura
+                                <Link to={`/docente/asignatura/${asignatura.id_asignatura}/${asignatura.nombre}`} className="bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-full shadow transition duration-200 transform hover:scale-105">
+                                    Administrar
                                 </Link>
                             </div>
                         </div>
