@@ -5,17 +5,42 @@ export const getExamenesByAsignatura = async (idAsignatura) => {
     return response.data;
 };
 
+// Crear un nuevo examen
 export const createExamen = async (examen) => {
-    const response = await axiosInstance.post('/examenes', examen);
-    return response.data;
+    try {
+        const response = await axiosInstance.post('/examenes', examen);
+        return response.data;
+    } catch (error) {
+        console.error('Error al crear examen:', error);
+        throw error;
+    }
 };
 
-export const updateExamen = async (id, examen) => {
-    const response = await axiosInstance.put(`/examenes/${id}`, examen);
-    return response.data;
+// Editar un examen existente
+export const updateExamen = async (idExamen, examen) => {
+    try {
+        const response = await axiosInstance.put(`/examenes/${idExamen}`, examen);
+        return response.data;
+    } catch (error) {
+        console.error('Error al actualizar examen:', error);
+        throw error;
+    }
 };
 
 export const deleteExamen = async (id) => {
     const response = await axiosInstance.delete(`/examenes/${id}`);
     return response.data;
+};
+
+
+
+// Publicar examen
+export const publicarExamen = async (idExamen) => {
+    try {
+        const response = await axiosInstance.patch(`/examenes/${idExamen}/publicar`);
+        return response.data;
+    } catch (error) {
+        console.error('Error al publicar el examen:', error);
+        throw error;
+    }
 };

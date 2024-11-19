@@ -19,13 +19,13 @@ const AdministrarMateria = () => {
             case 'Materiales':
                 return <MaterialesMateria idAsignatura={id}/>;
             case 'Cursos':
-                return <CursosMateria />;
+                return <CursosMateria idAsignatura={id}/>;
             case 'Exámenes':
                 return <ExamenesMateria idAsignatura={id}/>;
             case 'Estudiantes':
-                return <EstudiantesMateria />;
+                return <EstudiantesMateria idAsignatura={id}/>;
             case 'Calificaciones':
-                return <CalificacionesMateria />;
+                return <CalificacionesMateria idAsignatura={id}/>;
             default:
                 return <TareasMateria idAsignatura={id}/>;
         }

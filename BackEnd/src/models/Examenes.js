@@ -6,10 +6,11 @@ const Examenes = sequelize.define('Examenes', {
     titulo: { type: DataTypes.STRING, allowNull: false },
     descripcion: { type: DataTypes.TEXT },
     id_asignatura: { type: DataTypes.INTEGER, allowNull: false },
-    fecha_publicacion: { type: DataTypes.DATE, allowNull: false },
-    fecha_entrega: { type: DataTypes.DATE, allowNull: false },
+    fecha_publicacion: { type: DataTypes.DATE, allowNull: false }, // Acepta fecha y hora
+    fecha_entrega: { type: DataTypes.DATE, allowNull: false }, // Acepta fecha y hora
     estado: { type: DataTypes.ENUM('borrador', 'publicado'), defaultValue: 'borrador' },
-    puntuacion_total: { type: DataTypes.INTEGER, defaultValue: 100 }
+    puntuacion_total: { type: DataTypes.INTEGER, defaultValue: 100 },
+    duracion: { type: DataTypes.INTEGER, defaultValue: 60 },
 }, {
     tableName: 'examenes',
     timestamps: false

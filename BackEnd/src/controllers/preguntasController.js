@@ -11,11 +11,7 @@ exports.createPregunta = async (req, res) => {
     }
 };
 
-// Otros métodos...
-// getPreguntasByExamen
-// getPreguntaById
-// updatePregunta
-// deletePregunta
+
 
 exports.getPreguntasByExamen = async (req, res) => {
     try {
@@ -43,7 +39,18 @@ exports.updatePregunta = async (req, res) => {
     try {
         const { id } = req.params;
         const { id_examen, tipo, texto, puntuacion } = req.body;
-        await Preguntas.update({ id_examen, tipo, texto, puntuacion }, { where: { id } });
+
+        // Verificar si la pregunta existe
+        const pregunta = await Preguntas.findOne({ where: { id } });
+        if (!pregunta) {
+            return res.status(404).json({ message: 'No existe un registro de pregunta con ese ID' });
+        }
+
+        await Preguntas.update(
+            { id_examen, tipo, texto, puntuacion },
+            { where: { id } }
+        );
+
         res.status(200).json({ message: 'Pregunta actualizada' });
     } catch (error) {
         console.error('Error al actualizar la pregunta:', error);
@@ -54,6 +61,13 @@ exports.updatePregunta = async (req, res) => {
 exports.deletePregunta = async (req, res) => {
     try {
         const { id } = req.params;
+
+        // Verificar si la pregunta existe
+        const pregunta = await Preguntas.findOne({ where: { id } });
+        if (!pregunta) {
+            return res.status(404).json({ message: 'No existe un registro de pregunta con ese ID' });
+        }
+
         await Preguntas.destroy({ where: { id } });
         res.status(200).json({ message: 'Pregunta eliminada' });
     } catch (error) {

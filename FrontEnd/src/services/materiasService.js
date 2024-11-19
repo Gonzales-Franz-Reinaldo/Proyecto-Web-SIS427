@@ -21,3 +21,21 @@ export const getMateriasEstudiante = async () => {
         throw error;
     }
 };
+
+
+
+
+export const getEstudiantes = async (idAsignatura) => {
+    const response = await axiosInstance.get(`/materias/${idAsignatura}/estudiantes`);
+    return response.data;
+};
+
+export const deleteEstudiante = async (idAsignatura, idEstudiante) => {
+    await axiosInstance.delete(`/materias/${idAsignatura}/estudiantes/${idEstudiante}`);
+};
+
+export const contactarEstudiante = async (idAsignatura, idEstudiante, message) => {
+    await axiosInstance.post(`/materias/${idAsignatura}/estudiantes/${idEstudiante}/contactar`, {
+        message,
+    });
+};

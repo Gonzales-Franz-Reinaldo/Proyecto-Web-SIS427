@@ -13,6 +13,7 @@ const opcionesRoutes = require('./routes/opcionesRoutes'); // Importa las rutas 
 const respuestasRoutes = require('./routes/respuestasRoutes'); // Importa las rutas de respuestas
 const resultadosRoutes = require('./routes/resultadosRoutes'); // Importa las rutas de resultados
 
+
 dotenv.config();
 
 const app = express();
@@ -46,7 +47,7 @@ app.use('/api/examenes', examenesRoutes);
 app.use('/api/preguntas', preguntasRoutes);
 
 // Rutas de opciones
-// app.use('/api/opciones', opcionesRoutes);
+app.use('/api/opciones', opcionesRoutes);
 
 // Rutas de respuestas
 // app.use('/api/respuestas', respuestasRoutes);
@@ -54,8 +55,22 @@ app.use('/api/preguntas', preguntasRoutes);
 // Rutas de resultados
 // app.use('/api/resultados', resultadosRoutes);
 
+
+
 // Servir la carpeta uploads como estática
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+
+
+// Sincronizar modelos con la base de datos
+// Sincronizar modelos
+// Sincronizar modelos con la base de datos
+sequelize.sync({ alter: true }).then(() => {
+    console.log('Base de datos sincronizada');
+}).catch((error) => {
+    console.error('Error al sincronizar la base de datos:', error);
+});
+
 
 // Middleware para manejar rutas no encontradas
 app.use((req, res, next) => {
