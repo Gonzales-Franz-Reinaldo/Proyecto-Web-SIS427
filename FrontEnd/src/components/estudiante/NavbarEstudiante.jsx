@@ -8,6 +8,7 @@ const NavbarEstudiante = ({ activeSection, setActiveSection, logout }) => {
         { label: 'Mis Materias', icon: '📚' },
         { label: 'Contactos', icon: '📞' },
         { label: 'Mensajes', icon: '✉️' },
+        { label: 'Compilador', icon: 'Code' },
     ];
 
     return (

@@ -13,6 +13,8 @@ const opcionesRoutes = require('./routes/opcionesRoutes'); // Importa las rutas 
 const respuestasRoutes = require('./routes/respuestasRoutes'); // Importa las rutas de respuestas
 const resultadosRoutes = require('./routes/resultadosRoutes'); // Importa las rutas de resultados
 
+//? PARA EL COMPILADOR DEL CODIGO
+const compilerRoutes = require('./routes/compilerRoutes');
 
 dotenv.config();
 
@@ -27,6 +29,9 @@ app.use(bodyParser.json());
 app.get('/', (req, res) => {
     res.send('API funcionando correctamente');
 });
+
+// Rutas del compilador
+app.use('/api/compiler', compilerRoutes);
 
 // Rutas de autenticación
 app.use('/api/auth', authRoutes);
@@ -63,7 +68,6 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 
 // Sincronizar modelos con la base de datos
-// Sincronizar modelos
 // Sincronizar modelos con la base de datos
 sequelize.sync({ alter: false }).then(() => {
     console.log('Base de datos sincronizada');

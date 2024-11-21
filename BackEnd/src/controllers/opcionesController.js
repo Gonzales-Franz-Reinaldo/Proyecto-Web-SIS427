@@ -1,4 +1,4 @@
-const Opciones = require('../models/Opciones');
+const Opciones = require('../models/Opcion');
 
 exports.addOpcion = async (req, res) => {
     try {

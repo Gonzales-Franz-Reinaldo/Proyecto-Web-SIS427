@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getMaterialesByAsignatura } from '../../services/materiasService';
 import PropTypes from 'prop-types';
 
-const MaterialesMateriaEstudiante = ({ idAsignatura }) => {
+export const MaterialesMateriaEstudiante = ({ idAsignatura }) => {
     const [materiales, setMateriales] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -58,4 +58,4 @@ MaterialesMateriaEstudiante.propTypes = {
     idAsignatura: PropTypes.number.isRequired,
 };
 
-export default MaterialesMateriaEstudiante;
+

@@ -1,4 +1,5 @@
 const Preguntas = require('../models/Preguntas');
+const Opcion = require('../models/Opcion');
 
 exports.createPregunta = async (req, res) => {
     try {
@@ -15,14 +16,44 @@ exports.createPregunta = async (req, res) => {
 
 exports.getPreguntasByExamen = async (req, res) => {
     try {
-        const { id_examen } = req.params;
-        const preguntas = await Preguntas.findAll({ where: { id_examen } });
+        const { idExamen } = req.params; 
+
+        // Buscar las preguntas usando el idExamen extraído
+        const preguntas = await Preguntas.findAll({ where: { id_examen: idExamen } });
         res.status(200).json(preguntas);
     } catch (error) {
         console.error('Error al obtener preguntas:', error);
         res.status(500).json({ message: 'Error al obtener preguntas' });
     }
-}
+};
+
+
+
+// Obtener preguntas y opciones de un examen
+exports.getPreguntas_Examen = async (req, res) => {
+    const { idExamen } = req.params;
+    // console.log("El id_examen es: ", idExamen);
+
+    try {
+        const preguntas = await Preguntas.findAll({
+            where: { id_examen: idExamen },
+            include: [
+                {
+                    model: Opcion,
+                    as: 'opciones', // Usa el alias definido en la relación
+                },
+            ],
+        });
+
+        res.status(200).json(preguntas);
+    } catch (error) {
+        console.error('Error al cargar preguntas:', error);
+        res.status(500).json({ message: 'Error al cargar preguntas' });
+    }
+};
+
+
+
 
 exports.getPreguntaById = async (req, res) => {
     try {

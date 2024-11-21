@@ -4,6 +4,8 @@ import HeaderEstudiante from '../components/estudiante/HeaderEstudiante';
 import MateriasEstudiante from '../components/estudiante/MateriasEstudiante';
 import { AuthContext } from '../context/AuthContext';
 
+import CodeCompiler  from '../components/CodeCompiler';
+
 export const PlataformaEstudiante = () => {
     const [activeSection, setActiveSection] = useState('Inicio');
     const { user, logout } = useContext(AuthContext);
@@ -23,6 +25,8 @@ export const PlataformaEstudiante = () => {
                 return <div className="p-6">Aquí puedes gestionar tus contactos.</div>;
             case 'Mensajes':
                 return <div className="p-6">Aquí puedes leer tus mensajes.</div>;
+            case 'Compilador':
+                return <CodeCompiler />;
             default:
                 return <div className="p-6">Bienvenido a tu plataforma de aprendizaje.</div>;
         }

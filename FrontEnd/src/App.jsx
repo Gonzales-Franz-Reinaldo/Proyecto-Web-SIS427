@@ -9,6 +9,8 @@ import ProtectedRoute from './components/ProtectedRoute';
 import AdministrarMateria from './pages/materias/AdministrarMateria';
 import { AdministrarMateriaEstudiante } from './pages/materias/AdministrarMateriaEstudiante';
 
+
+
 const App = () => {
   return (
     <Router>
@@ -53,6 +55,7 @@ const App = () => {
             }
           />
 
+
         </Routes>
       </AuthProvider>
     </Router>
@@ -60,3 +63,4 @@ const App = () => {
 };
 
 export default App;
+

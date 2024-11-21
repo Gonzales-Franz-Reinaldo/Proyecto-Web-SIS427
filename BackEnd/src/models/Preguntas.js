@@ -6,10 +6,10 @@ const Preguntas = sequelize.define('Preguntas', {
     id_examen: { type: DataTypes.INTEGER, allowNull: false },
     tipo: { type: DataTypes.ENUM('multiple', 'unica', 'falso_verdadero', 'completar'), allowNull: false },
     texto: { type: DataTypes.TEXT, allowNull: false },
-    puntuacion: { type: DataTypes.INTEGER, allowNull: false }
+    puntuacion: { type: DataTypes.INTEGER, allowNull: false },
 }, {
     tableName: 'preguntas',
-    timestamps: false
+    timestamps: false,
 });
 
 module.exports = Preguntas;

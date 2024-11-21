@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { TareasMateriaEstudiante } from './TareasMateriaEstudiante';
 import { MaterialesMateriaEstudiante } from './MaterialesMateriaEstudiante';
-import { ExamenesMateriaEstudiante } from './ExamenesMateriaEstudiante';
+import { ExamenesMateriaEstudiante } from '../examenes/ExamenesMateriaEstudiante';
 import { CursosMateriaEstudiante } from './CursosMateriaEstudiante';
 
 export const AdministrarMateriaEstudiante = () => {
