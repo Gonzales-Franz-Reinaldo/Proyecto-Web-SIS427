@@ -9,6 +9,7 @@ const NavbarEstudiante = ({ activeSection, setActiveSection, logout }) => {
         { label: 'Contactos', icon: '📞' },
         { label: 'Mensajes', icon: '✉️' },
         { label: 'Compilador', icon: 'Code' },
+        { label: 'Controlador Arduino', icon: '🚪' }
     ];
 
     return (

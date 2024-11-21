@@ -62,6 +62,17 @@ app.use('/api/opciones', opcionesRoutes);
 
 
 
+
+
+
+const arduinoRoutes = require('./routes/arduinoRoutes'); // Importa las rutas del Arduino
+app.use('/api', arduinoRoutes); // Asegúrate de usar el prefijo /api
+
+
+
+
+
+
 // Servir la carpeta uploads como estática
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 

@@ -3,6 +3,7 @@ import NavbarEstudiante from '../components/estudiante/NavbarEstudiante';
 import HeaderEstudiante from '../components/estudiante/HeaderEstudiante';
 import MateriasEstudiante from '../components/estudiante/MateriasEstudiante';
 import { AuthContext } from '../context/AuthContext';
+import ControladorArduino from './ControladorArduino';
 
 import CodeCompiler  from '../components/CodeCompiler';
 
@@ -27,6 +28,9 @@ export const PlataformaEstudiante = () => {
                 return <div className="p-6">Aquí puedes leer tus mensajes.</div>;
             case 'Compilador':
                 return <CodeCompiler />;
+            case 'Controlador Arduino':
+                return <ControladorArduino />;
+
             default:
                 return <div className="p-6">Bienvenido a tu plataforma de aprendizaje.</div>;
         }

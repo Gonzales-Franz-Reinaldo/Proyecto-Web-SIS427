@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Editor de Código</title>
+    <!-- Importar CodeMirror CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/theme/monokai.min.css">
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            display: flex;
+            gap: 20px;
+        }
+        #editor-container, #output-container {
+            flex: 1;
+        }
+        #output {
+            width: 100%;
+            height: 300px;
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            padding: 10px;
+            overflow-y: auto;
+            font-family: monospace;
+        }
+        .button-container {
+            margin: 10px 0;
+        }
+        button {
+            padding: 8px 16px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="editor-container">
+            <h3>Editor de Código</h3>
+            <textarea id="code-editor">// Escribe tu código JavaScript aquí
+console.log('Hola mundo');
+
+// Ejemplo de función
+function sumar(a, b) {
+    return a + b;
+}
+
+// Prueba la función
+console.log(sumar(5, 3));</textarea>
+            <div class="button-container">
+                <button onclick="ejecutarCodigo()">Ejecutar Código</button>
+                <button onclick="limpiarSalida()">Limpiar Salida</button>
+            </div>
+        </div>
+        <div id="output-container">
+            <h3>Salida</h3>
+            <div id="output"></div>
+        </div>
+
+    </div>
+          <div class="button-container">
+                <button onclick=" window.location.href = 'inicio_estudiante.php'">Volver</button>
+            </div>
+    <!-- Importar scripts de CodeMirror -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/6.65.7/mode/javascript/javascript.min.js"></script>
+    
+    <script>
+        // Inicializar CodeMirror
+        var editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
+            mode: "javascript",
+            theme: "monokai",
+            lineNumbers: true,
+            autoCloseBrackets: true,
+            matchBrackets: true,
+            indentUnit: 4,
+            tabSize: 4,
+            lineWrapping: true,
+            height: "300px"
+        });
+
+        // Redefinir console.log para mostrar en nuestro output
+        const outputDiv = document.getElementById('output');
+        const originalConsoleLog = console.log;
+        console.log = function(...args) {
+            originalConsoleLog.apply(console, args);
+            const output = args.map(arg => 
+                typeof arg === 'object' ? JSON.stringify(arg, null, 2) : arg
+            ).join(' ');
+            appendToOutput(output);
+        };
+
+        function appendToOutput(content, isError = false) {
+            const line = document.createElement('div');
+            line.className = isError ? 'error' : '';
+            line.textContent = content;
+            outputDiv.appendChild(line);
+            outputDiv.scrollTop = outputDiv.scrollHeight;
+        }
+
+        function ejecutarCodigo() {
+            const codigo = editor.getValue();
+            try {
+                // Limpiar errores anteriores
+                outputDiv.innerHTML = '';
+                // Ejecutar el código
+                eval(codigo);
+            } catch (error) {
+                appendToOutput(error.message, true);
+            }
+        }
+
+        function limpiarSalida() {
+            outputDiv.innerHTML = '';
+        }
+
+        // Ajustar altura del editor
+        editor.setSize(null, 300);
+    </script>
+</body>
+</html>
