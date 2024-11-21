@@ -2,6 +2,9 @@ const Asignatura = require('../models/Asignatura');
 const Docente = require('../models/Docente');
 const Docente_asignatura = require('../models/DocenteAsignatura');
 
+// Para obtener todos las materias de los estudiantes
+// const Estudiante_asignatura = require('../models/EstudianteAsignatura');
+
 
 const { Estudiante_asignatura, User, Estudiante } = require('../models');
 
@@ -205,3 +208,41 @@ exports.contactEstudiante = async (req, res) => {
 };
 
 
+
+
+
+
+
+// Obtener todos las materias
+exports.getMateriasByEstudiante = async (req, res) => {
+    try {
+        const id_usuario = req.user.id; // ID del usuario logueado
+
+        // Encontrar el estudiante asociado al usuario
+        const estudiante = await Estudiante.findOne({ where: { id_usuario } });
+
+        if (!estudiante) {
+            return res.status(404).json({ error: 'Estudiante no encontrado' });
+        }
+
+        // Obtener las materias relacionadas con el estudiante
+        const materias = await Estudiante_asignatura.findAll({
+            where: { id_estudiante: estudiante.id },
+            include: [
+                {
+                    model: Asignatura,
+                    as: 'Asignatura',
+                    attributes: ['id', 'nombre', 'descripcion', 'sigla', 'curso', 'creditos'],
+                },
+            ],
+        });
+
+        // Transformar los datos
+        const resultado = materias.map((relacion) => relacion.Asignatura);
+
+        res.json(resultado);
+    } catch (error) {
+        console.error('Error al obtener las materias del estudiante:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
+};

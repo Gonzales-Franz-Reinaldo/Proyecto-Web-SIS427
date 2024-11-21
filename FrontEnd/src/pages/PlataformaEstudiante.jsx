@@ -1,15 +1,20 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import NavbarEstudiante from '../components/estudiante/NavbarEstudiante';
 import HeaderEstudiante from '../components/estudiante/HeaderEstudiante';
-import MateriasEstudiante  from '../components/estudiante/MateriasEstudiante';
+import MateriasEstudiante from '../components/estudiante/MateriasEstudiante';
+import { AuthContext } from '../context/AuthContext';
 
 export const PlataformaEstudiante = () => {
     const [activeSection, setActiveSection] = useState('Inicio');
+    const { user, logout } = useContext(AuthContext);
+
+    // console.log("El usuario logueado es: ", user.user);
+
 
     const renderContent = () => {
         switch (activeSection) {
             case 'Inicio':
-                return <div className="p-6">Bienvenido a tu plataforma de aprendizaje. Explora tus materias y recursos.</div>;
+                return <div className="p-6">Bienvenido a tu plataforma de aprendizaje, {user?.user?.nombre}.</div>;
             case 'Perfil':
                 return <div className="p-6">Aquí puedes editar tu perfil.</div>;
             case 'Mis Materias':
@@ -25,13 +30,11 @@ export const PlataformaEstudiante = () => {
 
     return (
         <div className="flex h-screen bg-gradient-to-b from-blue-40 to-blue-100">
-            <NavbarEstudiante activeSection={activeSection} setActiveSection={setActiveSection} />
+            <NavbarEstudiante activeSection={activeSection} setActiveSection={setActiveSection} logout={logout} />
             <div className="flex-1 flex flex-col">
-                <HeaderEstudiante />
+                <HeaderEstudiante user={user} />
                 <div className="p-6">{renderContent()}</div>
             </div>
         </div>
     );
 };
-
-

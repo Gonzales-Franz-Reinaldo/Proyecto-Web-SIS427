@@ -148,3 +148,27 @@ exports.deleteTarea = async (req, res) => {
         res.status(500).json({ message: 'Error al eliminar tarea' });
     }
 };
+
+
+
+
+
+exports.getTareasPorAsignatura = async (req, res) => {
+    const { id_asignatura } = req.params;
+
+    try {
+        const tareas = await Tarea.findAll({
+            where: { id_asignatura },
+            attributes: ['id', 'titulo', 'descripcion', 'fecha_publicacion', 'fecha_entrega', 'archivo_docente'],
+        });
+
+        if (!tareas.length) {
+            return res.status(404).json({ message: 'No se encontraron tareas para esta asignatura' });
+        }
+
+        res.json(tareas);
+    } catch (error) {
+        console.error('Error al obtener tareas:', error);
+        res.status(500).json({ message: 'Error al obtener tareas' });
+    }
+};

@@ -7,6 +7,7 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
 import AdministrarMateria from './pages/materias/AdministrarMateria';
+import { AdministrarMateriaEstudiante } from './pages/materias/AdministrarMateriaEstudiante';
 
 const App = () => {
   return (
@@ -42,6 +43,16 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+
+          <Route
+            path="/student/materias/:id"
+            element={
+              <ProtectedRoute>
+                <AdministrarMateriaEstudiante />
+              </ProtectedRoute>
+            }
+          />
+
         </Routes>
       </AuthProvider>
     </Router>

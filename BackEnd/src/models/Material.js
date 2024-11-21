@@ -14,4 +14,8 @@ const Material = sequelize.define('Material', {
     timestamps: false,
 });
 
+// Asociación con la tabla Asignatura
+// Material.belongsTo(Asignatura, { foreignKey: 'id_asignatura', as: 'Asignatura' });
+
+
 module.exports = Material;

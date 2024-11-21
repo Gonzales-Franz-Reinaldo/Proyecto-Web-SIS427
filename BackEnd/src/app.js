@@ -65,7 +65,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Sincronizar modelos con la base de datos
 // Sincronizar modelos
 // Sincronizar modelos con la base de datos
-sequelize.sync({ alter: true }).then(() => {
+sequelize.sync({ alter: false }).then(() => {
     console.log('Base de datos sincronizada');
 }).catch((error) => {
     console.error('Error al sincronizar la base de datos:', error);

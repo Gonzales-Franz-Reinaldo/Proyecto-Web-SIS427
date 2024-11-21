@@ -5,6 +5,7 @@ const {
     getEstudiante,
     removeEstudianteFromAsignatura,
     contactEstudiante,
+    getMateriasByEstudiante
 } = require('../controllers/materiasController');
 const { protect } = require('../middlewares/authMiddleware');
 
@@ -24,5 +25,9 @@ router.delete('/:id_asignatura/estudiantes/:id_estudiante', removeEstudianteFrom
 
 // Ruta para contactar a un estudiante
 router.post('/:id_asignatura/estudiantes/:id_estudiante/contactar', contactEstudiante);
+
+
+// Ruta protegida para obtener materias del estudiante
+router.get('/estudiante', protect, getMateriasByEstudiante);
 
 module.exports = router;

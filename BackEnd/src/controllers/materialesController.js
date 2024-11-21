@@ -2,6 +2,7 @@ const Material = require('../models/Material');
 const fs = require('fs');
 const path = require('path');
 
+
 // Obtener todos los materiales de una asignatura
 exports.getMaterialesByAsignatura = async (req, res) => {
     try {
@@ -54,6 +55,8 @@ exports.updateMaterial = async (req, res) => {
     }
 };
 
+
+
 // Eliminar un material
 exports.deleteMaterial = async (req, res) => {
     try {
@@ -70,5 +73,27 @@ exports.deleteMaterial = async (req, res) => {
     } catch (error) {
         console.error('Error al eliminar material:', error);
         res.status(500).json({ message: 'Error al eliminar material' });
+    }
+};
+
+
+
+
+
+
+// Obtener materiales por asignatura
+exports.getMaterialesPorAsignatura = async (req, res) => {
+    const { id_asignatura } = req.params;
+
+    try {
+        const materiales = await Material.findAll({
+            where: { id_asignatura },
+            attributes: ['id', 'titulo', 'descripcion', 'archivo', 'fecha_publicacion'],
+        });
+
+        res.status(200).json(materiales);
+    } catch (error) {
+        console.error('Error al obtener materiales:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
     }
 };

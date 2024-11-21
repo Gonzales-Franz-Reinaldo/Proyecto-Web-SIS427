@@ -70,3 +70,15 @@ export const deleteTarea = async (idTarea) => {
         throw error;
     }
 };
+
+
+
+export const getTareasByMateria = async (idAsignatura) => {
+    try {
+        const response = await axiosInstance.get(`/tareas/${idAsignatura}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error al obtener las tareas:', error);
+        throw error;
+    }
+};

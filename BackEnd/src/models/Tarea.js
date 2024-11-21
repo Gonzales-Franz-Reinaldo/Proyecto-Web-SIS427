@@ -1,6 +1,7 @@
 // models/Tarea.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
+const Asignatura = require('./Asignatura');
 
 const Tarea = sequelize.define('Tarea', {
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
@@ -14,5 +15,9 @@ const Tarea = sequelize.define('Tarea', {
     tableName: 'tareas',
     timestamps: false,
 });
+
+
+// Relación con Asignatura
+Tarea.belongsTo(Asignatura, { foreignKey: 'id_asignatura', as: 'asignatura' });
 
 module.exports = Tarea;

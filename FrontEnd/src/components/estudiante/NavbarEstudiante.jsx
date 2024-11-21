@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import '../../styles/NavbarEstudiante.css';
 
-const NavbarEstudiante = ({ activeSection, setActiveSection }) => {
+const NavbarEstudiante = ({ activeSection, setActiveSection, logout }) => {
     const menuItems = [
         { label: 'Inicio', icon: '🏠' },
         { label: 'Perfil', icon: '👤' },
@@ -29,7 +29,7 @@ const NavbarEstudiante = ({ activeSection, setActiveSection }) => {
             </ul>
             <button
                 className="mt-8 px-6 py-3 bg-red-600 text-white rounded-full shadow-lg hover:bg-red-700 hover:scale-105 transition"
-                onClick={() => alert('Cerrando sesión...')}
+                onClick={logout}
             >
                 Cerrar Sesión
             </button>
@@ -40,6 +40,7 @@ const NavbarEstudiante = ({ activeSection, setActiveSection }) => {
 NavbarEstudiante.propTypes = {
     activeSection: PropTypes.string.isRequired,
     setActiveSection: PropTypes.func.isRequired,
+    logout: PropTypes.func.isRequired,
 };
 
 export default NavbarEstudiante;
